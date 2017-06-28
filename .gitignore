@@ -1,0 +1,11 @@
+.idea/
+dev_code/
+build/
+elisp
+tangle-make
+literate-tools/
+src/org-templates
+src/style
+src/sitemap.org
+src/sitemap.org~
+.PAT
