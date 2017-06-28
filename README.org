@@ -1,0 +1,5 @@
+#+TITLE: Content Server
+#+AUTHOR: Vlead
+
+* Content Server
+  This app will be responsible for saving the resources and fetching them when needed.
