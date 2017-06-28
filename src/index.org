@@ -1,0 +1,6 @@
+#+TITLE: The Translator Module
+#+AUTHOR: VLEAD
+#+SETUPFILE: ./org-templates/level-0.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil

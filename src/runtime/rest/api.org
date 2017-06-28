@@ -1,0 +1,49 @@
+
+#+TITLE: The REST API
+#+AUTHOR: VLEAD
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Introduction
+  This document illustrates building of REST API for the translators
+
+* REST
+
+** Blueprint
+#+NAME: blueprint
+#+BEGIN_SRC python
+api = Blueprint('APIs', __name__)
+
+#+END_SRC
+
+
+** index
+#+NAME: index_route
+#+BEGIN_SRC python
+@api.route("/", methods=['GET'])
+def index(request): # redirect to index.org of documentation
+    pass
+
+#+END_SRC
+
+
+* Imports
+#+NAME: imports_api
+#+BEGIN_SRC python
+import json, yaml
+from flask import Blueprint, session, request, make_response, \
+    jsonify, url_for, abort
+
+# Need to change the root PYTHONPATH during runtime
+from runtime.system.system_interface import *
+
+#+END_SRC
+
+* Tangle
+#+BEGIN_SRC python :tangle api.py :eval no :noweb yes
+<<imports_api>>
+<<blueprint>>
+<<index_route>>
+#+END_SRC

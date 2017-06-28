@@ -1,0 +1,44 @@
+#+TITLE: Translators System
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* The =System= class
+  There is only one =System= in the application. This =System= interacts with
+  the Github API and generates the experiment structure on the remote server.
+
+** Constructor
+   The system cannot be initialized.
+
+#+NAME: class_system
+#+BEGIN_SRC python
+class System():
+
+    # use exceptions to raise error
+    # "cannot initialise error"
+    def __init__(self):
+        pass
+
+#+END_SRC
+
+** Methods
+   These methods are used to create the experiments and labs. The versioning of
+   an experiment is done using the Github API and the configuration parameters
+   specified in the [[../config/config.org][=Configuration=]] of the application. The packaged lab
+   structure is generated using the structure generator for open edX module and the
+   corresponding configuration parameters.
+
+** Imports
+   The system requires access to the os library
+#+NAME: imports_system
+#+BEGIN_SRC python
+#+END_SRC
+   
+* Tangle                                                        :boilerplate:
+#+BEGIN_SRC python :tangle system.py :eval no :noweb yes
+<<imports_system>>
+<<class_system>>
+#+END_SRC

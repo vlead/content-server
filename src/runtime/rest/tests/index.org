@@ -1,0 +1,35 @@
+#+title: Test Setup
+#+AUTHOR: VLEAD
+#+DATE: [2017-06-26 Tue]
+#+SETUPFILE: ../../../org-templates/level-4.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Test Harness
+** Imports
+#+BEGIN_SRC python :tangle harness.py
+from flask_testing import TestCase
+#+END_SRC
+   
+** Class TestHarness
+#+BEGIN_SRC python :tangle harness.py
+class TestHarness(TestCase):
+    TESTING = True
+
+    def create_app(self):
+        app = create_app(__name__)
+        app.config['TESTING'] = True
+        return app
+
+    def setUp(self):
+
+    def tearDown(self):
+
+#+END_SRC
+
+* Package
+
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print "runtime.rest.tests package"
+#+END_SRC
