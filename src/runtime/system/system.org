@@ -25,11 +25,15 @@ class System():
 #+END_SRC
 
 ** Methods
-   These methods are used to create the experiments and labs. The versioning of
-   an experiment is done using the Github API and the configuration parameters
-   specified in the [[../config/config.org][=Configuration=]] of the application. The packaged lab
-   structure is generated using the structure generator for open edX module and the
-   corresponding configuration parameters.
+*** =get_path=
+    This method returns the path in =content-server= which stores the resources.
+
+#+NAME: get_path    
+#+BEGIN_SRC python
+    @staticmethod
+    def get_path():
+        return Config.PATH
+#+END_SRC
 
 ** Imports
    The system requires access to the os library
@@ -41,4 +45,5 @@ class System():
 #+BEGIN_SRC python :tangle system.py :eval no :noweb yes
 <<imports_system>>
 <<class_system>>
+<<get_path>>
 #+END_SRC

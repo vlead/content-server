@@ -24,6 +24,14 @@ class SystemInterface():
 #+END_SRC
    
 ** Methods
+*** =get_path_for_resource=
+    This function is the system interface for the =/get_path_for_resource= API.
+    #+NAME: get_path_for_resource
+    #+BEGIN_SRC python
+    @staticmethod
+    def get_path_for_resource(id):
+        return System.get_path()
+    #+END_SRC
 ** Imports
 #+NAME: imports_system_interface
 #+BEGIN_SRC python
@@ -34,4 +42,5 @@ class SystemInterface():
 #+BEGIN_SRC python :tangle system_interface.py :eval no :noweb yes
 <<imports_system_interface>>
 <<class_system_interface>>
+<<get_path_for_resource>>
 #+END_SRC

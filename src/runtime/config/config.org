@@ -7,99 +7,19 @@
 
 * Introduction
 
-This holds the application's configuration parameters. It is important to set
-these parameters before running the application. The versioning of an
-experiment requires an admin user key, an org ID and URL under which the experiments
-will be created. The remote author can be granted permissions to the various
-experiments under this org.
-
-The structure generator module for Open edX requires the path to automated
-script, the filename of the JSON format file that is generated each time and
-the relative path in which the packaged lab must be stored.
+  This holds the application's configuration parameters. It is important
+  to set these parameters before running the application. This will need
+  the path where the resources are stored.
 
 #+NAME: class_config
 #+BEGIN_SRC python
 class Config:
 
-    # Github admin user key
-    USER_KEY = "ed40cebc776d2b00834d7fba60ccbd13beaae2b6"
-
-    # Github org ID
-    ORG_ID = 26247085
-
-    # Github org URL
-    ORG_URL = "https://github.com/test-platform-to-to-deleted/"
-    
-    # Openedx script file
-    OPENEDX_SCRIPT = "openedx/runtime/open-edx-structure/automation.py"
-
-    # OpenedX labspec json file
-    LABSPEC = "labspec.json"
-
-    # Openedx lab path
-    LABPATH = "."
-
-    # Makefile
-    MAKEFILE = """#SHELL := /bin/bash
-CODE_DIR=build/code
-DOCS_DIR=build/docs
-PWD=$(shell pwd)
-STATUS=0
-
-all:  post-build
-
-init:
-    ./init.sh
-
-build: init
-    make -f tangle-make -k all
-
-post-build: build
-    if [ ! -d "${DOCS_DIR}/simulation/static/img" ]; then mkdir -p ${DOCS_DIR}/simulation/static/img; fi
-    if [ ! -d "${DOCS_DIR}/simulation/static/js" ]; then mkdir -p ${DOCS_DIR}/simulation/static/js; fi
-    if [ ! -d "${DOCS_DIR}/simulation/static/css" ]; then mkdir -p ${DOCS_DIR}/simulation/static/css; fi
-    if [ ! -d "${CODE_DIR}/simulation/static/img" ]; then mkdir -p ${CODE_DIR}/simulation/static/img; fi
-    if [ ! -d "${CODE_DIR}/simulation/static/js" ]; then mkdir -p ${CODE_DIR}/simulation/static/js; fi
-    if [ ! -d "${CODE_DIR}/simulation/static/css" ]; then mkdir -p ${CODE_DIR}/simulation/static/css; fi
-    rsync -a ${DOCS_DIR}/simulation/static/img/ ${CODE_DIR}/simulation/static/img/
-    rsync -a ${DOCS_DIR}/simulation/static/js/ ${CODE_DIR}/simulation/static/js/
-    rsync -a ${DOCS_DIR}/simulation/static/css/ ${CODE_DIR}/simulation/static/css/
-
-clean:
-    make -f tangle-make clean"""
-
-    # init.sh
-    INIT = """#!/bin/bash
-
-if [ -d literate-tools ]; then
-    echo "literate-tools already present"
-    (cd literate-tools; git checkout readtheorg; git pull)
-else
-    (git clone https://github.com/vlead/literate-tools.git; cd literate-tools; git checkout readtheorg)
-fi
-
-if [ -L tangle-make ]; then
-    echo "symlinked makefile already present"
-else
-    ln -sf literate-tools/makefile tangle-make
-fi"""
-
-    # README.org
-    README = """
-* Simulation
-+ Use the directory =src/simulation= for the simulation files.
-+ Add a directory =static= in =src/simulation= for all the static files.
-+ The =static= directory must have three directories =img=, =js=, =css= for the respective files.
-
-* NOTE
-+ Please stick to the naming conventions, to build the resources without any error.
-    """
-    
-    # use Exceptions module here to show
-    # "Cannot initialize error"
     def __init__(self):
         pass
 
+    # path where the resources are stored in content-server
+    PATH = "."
 #+END_SRC
 
 * Application Configuration

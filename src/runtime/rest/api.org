@@ -19,7 +19,7 @@ api = Blueprint('APIs', __name__)
 #+END_SRC
 
 
-** index
+** Index
 #+NAME: index_route
 #+BEGIN_SRC python
 @api.route("/", methods=['GET'])
@@ -28,6 +28,34 @@ def index(request): # redirect to index.org of documentation
 
 #+END_SRC
 
+** Get Path for resource
+*** API design
+    
+    - URL :: /get_path_for_resource
+    - METHOD :: GET
+    - EXAMPLE ::
+                #+BEGIN_EXAMPLE
+                /get_path_for_resource?id=<expid>
+                #+END_EXAMPLE
+    - SUCCESS Response :: 200 OK
+    - ERROR Response :: 400 Invalid Lab Spec
+
+*** =/get_path_for_resource= API
+    The route =/get_path_for_resource= is a route of method =GET=
+    which will return the path in content server where the resources
+    are saved.
+
+#+NAME: get_path_for_resource
+#+BEGIN_SRC python
+@api.route('/get_path_for_resource', methods=['GET'])
+def get_path_for_resource():
+    if request.method == 'GET':
+        id = request.args['id']
+        try:
+            return SystemInterface.get_path_for_resource(id)
+        except Exception as e:
+            return make_response(str(e), 400, None)
+#+END_SRC
 
 * Imports
 #+NAME: imports_api
@@ -46,4 +74,5 @@ from runtime.system.system_interface import *
 <<imports_api>>
 <<blueprint>>
 <<index_route>>
+<<get_path_for_resource>>
 #+END_SRC
