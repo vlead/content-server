@@ -35,6 +35,8 @@ class SystemInterface():
 ** Imports
 #+NAME: imports_system_interface
 #+BEGIN_SRC python
+from runtime.system.system import System
+
 #+END_SRC
    
 
