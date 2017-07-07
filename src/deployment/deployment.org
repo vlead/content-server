@@ -95,6 +95,6 @@
   11. Add the following lines in the file =/etc/sudoers= in the User privilege
       section. You can access the file using the command =visudo=.
 
-      #+BEGIN_EXAMPLE
-      www-data ALL=(ALL:ALL) NOPASSWD:ALL
-      #+END_EXAMPLE
+#+BEGIN_EXAMPLE
+www-data ALL=(ALL:ALL) NOPASSWD:ALL
+#+END_EXAMPLE
