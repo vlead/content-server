@@ -98,6 +98,3 @@
       #+BEGIN_EXAMPLE
       www-data ALL=(ALL:ALL) NOPASSWD:ALL
       #+END_EXAMPLE
-
-
-  
