@@ -96,7 +96,7 @@ WSGIScriptAlias / /var/www/content-server/content-server.wsgi
 [root@content-server]: chmod -R 777 /var/www
 #+END_EXAMPLE
   
-  Add the following lines in the file =/etc/sudoers.tmp= in the User privilege section. You can access the file using the command visudo
+  Add the following lines in the file =/etc/sudoers.tmp= in the User privilege section. You can access the file using the command =visudo=.
 
 #+BEGIN_EXAMPLE
 www-data ALL=(ALL:ALL) NOPASSWD:ALL
