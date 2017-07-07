@@ -1,6 +1,21 @@
-#+TITLE: The Translator Module
+#+TITLE: The Content Server
 #+AUTHOR: VLEAD
 #+SETUPFILE: ./org-templates/level-0.org
 #+TAGS: boilerplate(b)
 #+EXCLUDE_TAGS: boilerplate
 #+OPTIONS: ^:nil
+
+* Introduction
+  The Content-Server module is a micro-service part of the VLabs platform
+  [[https://github.com/vlead/vlabs-platform/blob/refactoring/src/design/index.org][=design=]]. This holds the data of all the experiments.
+* Design of the Application
+Application consists of just one API which gives the path for the storage of data of experiment.
+* Components of the application directory
+  - [[./deployment/index.org][=deployment=]]
+
+  - [[./runtime/index.org][=runtime=]]
+* Tangle
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print("Translators package")
+
+#+END_SRC

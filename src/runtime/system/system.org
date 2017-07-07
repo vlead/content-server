@@ -39,6 +39,8 @@ class System():
    The system requires access to the os library
 #+NAME: imports_system
 #+BEGIN_SRC python
+from runtime.config.config import Config
+
 #+END_SRC
    
 * Tangle                                                        :boilerplate:
