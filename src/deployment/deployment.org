@@ -88,13 +88,28 @@
   10. Set permissions so that the user =www-data= can access these files while
       running the application.
 
-     #+BEGIN_EXAMPLE
-     [root@content-server]: chmod -R 777 /var/www
-     #+END_EXAMPLE
+      #+BEGIN_EXAMPLE
+      [root@content-server]: chmod -R 777 /var/www
+      #+END_EXAMPLE
 
   11. Add the following lines in the file =/etc/sudoers= in the User privilege
       section. You can access the file using the command =visudo=.
+      #+BEGIN_EXAMPLE
+      www-data ALL=(ALL:ALL) NOPASSWD:ALL
+      #+END_EXAMPLE
 
-#+BEGIN_EXAMPLE
-www-data ALL=(ALL:ALL) NOPASSWD:ALL
-#+END_EXAMPLE
+  12. Create a =bash-script= =/update.sh= which will update your code if there
+      are any new commits in the Github repository of =content-server=.
+      
+      #+BEGIN_SRC sh
+        #!/bin/bash
+        
+        export http_proxy='http://proxy.iiit.ac.in:8080'
+        export https_proxy='http://proxy.iiit.ac.in:8080'
+        cd ~/content-server
+        git checkout 2017-summer-interns
+        git pull
+        make
+        rsync -a build/code/ /var/www/content-server/
+        service apache2 restart
+      #+END_SRC
