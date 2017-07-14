@@ -1,0 +1,115 @@
+# ;; -*- mode: org; fill-column: 80; -*-
+#+TITLE: Deploying Microservices
+#+AUTHOR: Sounak Pradhan
+
+* Deployment
+
+  1. First, =ssh= into =base4= machine and make a new container. This demo will
+     be for the microservice =content-server= which will have the =IP Address=
+     =10.4.12.252= and will be named =content-server.vlabs.ac.in=.
+     #+BEGIN_EXAMPLE
+     [user@local]: ssh root@10.4.12.24
+     #+END_EXAMPLE
+
+  2. Create the =OpenVZ= container, start it, set its configurations and finally
+     enter into it.
+
+     Details about =OpenVZ= can be found [[https://openvz.org/Vzctl][here]].
+
+     #+BEGIN_EXAMPLE
+     [root@base4]: vzctl create 12252 --ostemplate ubuntu-14.04_x64-with-emacs --ipadd 10.4.12.252 --hostname content-server.vlabs.ac.in
+     [root@base4]: vzctl start 12252
+     [root@base4]: vzctl set 12252 --nameserver inherit --ram 256M --swap 512M --onboot yes --save
+     [root@base4]: vzctl enter 12252
+     #+END_EXAMPLE
+
+  3. Set the proxies.
+     #+BEGIN_EXAMPLE
+     [root@content-server]: export http_proxy='http://proxy.iiit.ac.in:8080'
+     [root@content-server]: export https_proxy='http://proxy.iiit.ac.in:8080'
+     #+END_EXAMPLE
+
+  4. Proceed to cloning the =content-server= repository in =/root= and building
+     the code.
+     #+BEGIN_EXAMPLE
+     [root@content-server]: cd /root
+     [root@content-server]: git clone https://github.com/vlead/content-server.git
+     [root@content-server]: cd content-server
+     [root@content-server]: git checkout 2017-summer-interns
+     [root@content-server]: make -k all
+     #+END_EXAMPLE
+
+  5. This demo will use =Apache2= as the =web-server= and it will be
+     pre-installed in the template =ubuntu-14.04_x64-with-emacs=.
+
+     Copy the =code= files into =/var/www= and change the name of the directory
+     to =content-server=.
+
+     #+BEGIN_EXAMPLE
+     [root@content-server]: rsync -a /root/content-server/build/code /var/www/
+     [root@content-server]: mv /var/www/code /var/www/content-server
+     #+END_EXAMPLE
+
+  6. Install the pre-requisites.
+     #+BEGIN_EXAMPLE
+     [root@content-server]: apt-get install libapache2-mod-wsgi
+     #+END_EXAMPLE
+
+  7. Install the Python dependencies.
+     #+BEGIN_EXAMPLE
+     [root@content-server]: pip install flask flask-cors flask-testing pyyaml requests
+     #+END_EXAMPLE
+
+  8. Create the =.wsgi= file and name it =content-server.wsgi= and copy the
+     below contents to that file. Place this file in =/var/www/content-server=.
+     #+BEGIN_SRC python
+     import sys, os
+
+     sys.path.insert(0, "/var/www/content-server")
+
+     os.environ['http_proxy'] = 'http://proxy.iiit.ac.in:8080'
+     os.environ['https_proxy'] = 'http://proxy.iiit.ac.in:8080'
+     os.environ['HOME'] = "/var/www"
+
+     from runtime.rest.app import create_app
+     from runtime.config import app_config as config
+
+     application = create_app(config)
+     #+END_SRC
+
+  9. Add the following lines to the Apache defaut configuration file
+     =/etc/apache2/sites-available/default.conf= or
+     =/etc/apache2/sites-available/000-default.conf= to pick the wsgi file.
+
+     #+BEGIN_EXAMPLE
+     WSGIScriptAlias / /var/www/content-server/content-server.wsgi
+     #+END_EXAMPLE
+
+  10. Set permissions so that the user =www-data= can access these files while
+      running the application.
+
+      #+BEGIN_EXAMPLE
+      [root@content-server]: chmod -R 777 /var/www
+      #+END_EXAMPLE
+
+  11. Add the following lines in the file =/etc/sudoers= in the User privilege
+      section. You can access the file using the command =visudo=.
+      #+BEGIN_EXAMPLE
+      www-data ALL=(ALL:ALL) NOPASSWD:ALL
+      #+END_EXAMPLE
+
+  12. Create a =bash-script= =/update.sh= which will update your code if there
+      are any new commits in the Github repository of =content-server=.
+      
+      #+BEGIN_SRC sh
+        #!/bin/bash
+        
+        export http_proxy='http://proxy.iiit.ac.in:8080'
+        export https_proxy='http://proxy.iiit.ac.in:8080'
+        cd ~/content-server
+        git checkout 2017-summer-interns
+        git pull
+        make
+        rsync -a build/code/ /var/www/content-server/
+        service apache2 restart
+      #+END_SRC
