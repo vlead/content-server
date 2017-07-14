@@ -1,0 +1,102 @@
+# ;; -*- mode: org; fill-column: 80; -*-
+#+TITLE: Setting up Nginx server in Ubuntu 14.04 containers
+#+AUTHOR: Sounak Pradhan
+#+EMAIL: sounak.98@gmail.com
+
+* Setting up Nginx webserver in Ubuntu 14.04 LTS
+  1. Create a container, start it, set it up and enter into it. These
+     steps are shown in [[./setup-apache2.org][deploying content-server]].
+
+  2. Uninstall Apache2 from the container
+     #+BEGIN_EXAMPLE
+     apt-get purge apache2 apache2-utils apache2.2-bin apache2-common
+     apt-get autoremove
+     whereis apache2
+     sudo rm -rf /etc/apache2
+     #+END_EXAMPLE
+
+     #+BEGIN_EXAMPLE
+     NOTE: rm -rf all the directories that was an output of whereis apache2
+     #+END_EXAMPLE
+
+  3. Install Nginx
+     #+BEGIN_EXAMPLE
+     apt-get update
+     apt-get nginx
+     #+END_EXAMPLE
+
+     Installing =Nginx= will automatically start the server.
+
+  4. Make sure that the server automatically restarts when the system is restarted
+     #+BEGIN_EXAMPLE
+     update-rc.d nginx defaults
+     #+END_EXAMPLE
+
+* Setting up Flask app using Nginx and gunicorn
+  1. Install the required packages from =apt-get=
+     #+BEGIN_EXAMPLE
+     apt-get install build-essential python python-dev
+     #+END_EXAMPLE
+
+  2. Install =virtualenv= and =virtualenvwrapper=
+     #+BEGIN_EXAMPLE
+     pip install virtualenv virtualenvwrapper
+     export WORKON_HOME=~/.virtualenvs
+     source /usr/local/bin/virtualenvwrapper.sh
+     #+END_EXAMPLE
+
+  3. Make a virtual environment for the app
+     #+BEGIN_EXAMPLE
+     mkvirtualenv cs
+     pip install gunicorn flask flask-cors pyyaml
+     #+END_EXAMPLE
+
+  4. Clone and build the repository
+     #+BEGIN_EXAMPLE
+     git clone https://github.com/vlead/content-server.git
+     cd content-server/
+     make -k all
+     mkdir /var/www/content-server
+     rsync -a /build/code/ /var/www/content-server
+     #+END_EXAMPLE
+
+  5. Create the =wsgi.py= file in =content-server/build/code/=
+     #+BEGIN_SRC python
+import sys, os
+
+os.environ['http_proxy'] = 'http://proxy.iiit.ac.in:8080'
+os.environ['https_proxy'] = 'http://proxy.iiit.ac.in:8080'
+
+from runtime.rest.app import create_app
+from runtime.config import app_config as config
+
+application = create_app(config)
+
+if __name__ == "__main__":
+    application.run(host='0.0.0.0')
+     #+END_SRC
+
+  6. Delete the default configuration of nginx and make a new configuration for the app
+     #+BEGIN_EXAMPLE
+     rm /etc/nginx/sites-enabled/default
+     touch /etc/nginx/sites-available/cs
+     ln -s /etc/nginx/sites-available/cs /etc/nginx/sites-enabled
+     #+END_EXAMPLE
+
+  7. Write the contents of the file =/etc/nginx/sites-enabled/cs=
+     #+BEGIN_EXAMPLE
+     server {
+         location / {
+             proxy_pass http://127.0.0.1:8000;
+             proxy_set_header Host $host;
+             proxy_set_header X-Real-IP $remote_addr;
+         }
+     }
+     #+END_EXAMPLE
+
+  8. Restart server and run =gunicorn=
+     #+BEGIN_EXAMPLE
+     service nginx restart
+     cd ~/content-server/build/code/
+     gunicorn --bind 0.0.0.0:8000 wsgi &!
+     #+END_EXAMPLE

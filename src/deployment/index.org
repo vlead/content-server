@@ -1,22 +1,6 @@
-#+TITLE: Deploying the application on a server
-#+AUTHOR: VLEAD
-#+SETUPFILE: ../org-templates/level-1.org
-#+TAGS: boilerplate(b)
-#+EXCLUDE_TAGS: boilerplate
-#+OPTIONS: ^:nil
+#+TITLE: Deployment
+#+AUTHOR: Sounak Pradhan
 
-* Introduction
-  This document will illustrate the process for setting up the application
-
-* Set Python path during runtime
-#+BEGIN_SRC bash
-cd build/code
-export PYTHONPATH=$(pwd)
-#+END_SRC
-
-* Set temporary path to create the output directories
-  #+BEGIN_SRC bash
-  vim runtime/config/config.py
-  #+END_SRC
-
-  Set =SYSTEMPATH= variable
+* Deploying the app in the server
+  + [[./setup-nginx.org][Setting up using Nginx and gunicorn]]
+  + [[./setup-apache2.org][Setting up using Apache2 and WSGI]]
