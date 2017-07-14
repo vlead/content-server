@@ -2,5 +2,6 @@
 #+AUTHOR: Sounak Pradhan
 
 * Deploying the app in the server
-  + [[./setup-nginx.org][Setting up using Nginx and gunicorn]]
-  + [[./setup-apache2.org][Setting up using Apache2 and WSGI]]
+  + [[./nginx.org][Setting up using Nginx and gunicorn]]
+  + [[./apache2.org][Setting up using Apache2 and WSGI]]
+  + [[./developerenv.org][Setting up in localhost]]
