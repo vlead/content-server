@@ -1,8 +1,8 @@
 {
    "lab":{
       "description":{
-         "name":"Translators",
-         "id":"translators",
+         "name":"content-server",
+         "id":"content-server",
          "status":"working code",
          "discipline":[
 
@@ -75,7 +75,7 @@
                   
                ],
                "build":[
-                  "cd /root/labs/translators; make build"
+                  "cd /root/labs/content-server; make build"
                ],
                "post_build":[
                   "pip install gunicorn flask flask-cors pyyaml",
