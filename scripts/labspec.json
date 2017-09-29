@@ -102,7 +102,7 @@
                   "ln -s /etc/nginx/sites-available/cs /etc/nginx/sites-enabled",
                   "bash /root/labs/content-server/scripts/configure.sh",
                   "service nginx restart",
-                  "cd /var/www/content-server/",
+                  "cd /var/www/content-server/code",
                   "gunicorn --bind 0.0.0.0:8000 --timeout 10000 --daemon wsgi",
                   "service nginx restart"
                ],
