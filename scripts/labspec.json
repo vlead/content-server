@@ -78,6 +78,20 @@
                   "cd /root/labs/content-server; make build"
                ],
                "post_build":[
+                  "apt-get -y update",
+                  "apt-get -y purge apache2 apache2-utils apache2.2-bin",
+                  "rm -rf /usr/sbin/apache2",
+                  "rm -rf /usr/lib/apache2",
+                  "rm -rf /etc/apache2",
+                  "rm -rf /usr/share/apache2",
+                  "rm -rf /usr/share/man/man8/apache2.8.gz",
+                  "apt-get -y install nginx",
+                  "update-rc.d nginx defaults",
+                  "apt-get -y install build-essential",
+                  "apt-get -y install python",
+                  "apt-get -y install python-dev",
+                  "apt-get -y install python-pip",
+                  "apt-get -y install git",
                   "pip install gunicorn flask flask-cors pyyaml",
                   "mkdir -p /var/www/content-server",
                   "rsync -a /root/labs/content-server/build/code /var/www/content-server/",
@@ -113,14 +127,14 @@
                "min_required":"10gb"
             },
             "installer":[
-               "apt-get update",
-               "apt-get install nginx",
+               "apt-get -y update",
+               "apt-get -y install nginx",
                "update-rc.d nginx defaults",
-               "apt-get install build-essential",
-               "apt-get install python",
-               "apt-get install python-dev",
-               "apt-get install python-pip",
-               "apt-get install git",
+               "apt-get -y install build-essential",
+               "apt-get -y install python",
+               "apt-get -y install python-dev",
+               "apt-get -y install python-pip",
+               "apt-get -y install git",
                "pip install gunicorn flask flask-cors pyyaml PyGithub"
             ],
             "lab_actions":{
