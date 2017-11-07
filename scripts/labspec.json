@@ -96,6 +96,7 @@
                   "mkdir -p /var/www/content-server",
                   "rsync -a /root/labs/content-server/build/code /var/www/content-server/",
                   "mkdir /var/www/logs",
+                  "mkdir /var/www/resources",
                   "chmod -R 777 /var/www/logs",
                   "rm -rf /etc/nginx/sites-enabled/default",
                   "touch /etc/nginx/sites-available/content-server",
