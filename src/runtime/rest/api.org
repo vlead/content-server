@@ -24,6 +24,7 @@ api = Blueprint('APIs', __name__)
 #+BEGIN_SRC python
 @api.route("/", methods=['GET'])
 def index():
+    current_app.logger.debug("index GET")
     return """<h1>Content-Server Running</h1>
 <a href="https://github.com/vlead/content-server">https://github.com/vlead/content-server</a>"""
 
@@ -50,6 +51,7 @@ def index():
 #+BEGIN_SRC python
 @api.route('/get_path_for_resource', methods=['GET'])
 def get_path_for_resource():
+    current_app.logger.debug("get_path_resource GET")
     if request.method == 'GET':
         id = request.args['id']
         try:
@@ -63,7 +65,7 @@ def get_path_for_resource():
 #+BEGIN_SRC python
 import json, yaml
 from flask import Blueprint, session, request, make_response, \
-    jsonify, url_for, abort
+    jsonify, url_for, abort, current_app
 
 # Need to change the root PYTHONPATH during runtime
 from runtime.system.system_interface import *
